@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .question:last-child {
+            border-bottom: none;
+        }
+
+        .question p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .question .email {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Questions</h1>
+        <div id="questionsList"></div>
+    </div>
+
+    <script>
+        // Function to fetch questions from the server
+        async function fetchQuestions() {
+            try {
+                const response = await fetch('http://localhost:3000/api/questions');
+                const data = await response.json();
+                displayQuestions(data);
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+            }
+        }
+
+        // Function to display questions on the webpage
+        function displayQuestions(questions) {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = ''; // Clear previous content
+
+            questions.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+                    <p><span class="email">Email:</span> ${question.email}</p>
+                    <p><span class="question-text">Question:</span> ${question.question}</p>
+                `;
+                questionsList.appendChild(questionDiv);
+            });
+        }
+
+        // Fetch questions when the page loads
+        window.addEventListener('load', fetchQuestions);
+    </script>
+</body>
+</html>

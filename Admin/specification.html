@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Specification</title>
+    <link rel="stylesheet" href="example.css"> <!-- Link to the CSS file -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- <header style="background-color: #232f3e;">
+        <div class="header-container">
+            <img src="img\images.png" alt="Amazon Logo">
+        </div>
+    </header> -->
+    <center><h1>Specification</h1></center>
+
+    <div class="container">
+        <div class="popup-message" id="popupMessage">
+            <span class="popup-message-content" id="popupMessageContent"></span>
+            <span class="popup-message-close" onclick="closePopupMessage()">&times;</span>
+        </div>
+        <div class="product-image">
+            <img id="product-image" src="" alt="Product Image">
+        </div>
+        
+        <div class="specifications">
+            <div class="product-details-container">
+                <div class="product-details">
+                    <h2 id="product-name" class="product-name"></h2>
+                    <p id="product-description" class="product-description"></p>
+                    <div class="product-rating">
+                        <span class="rating">4.0</span>
+                        <span class="rating-count">(25,959 ratings)</span>
+                    </div>
+                    <div class="product-price">
+                        <span id="discounted-price" class="discounted-price"></span>
+                        <span id="original-price" class="original-price"></span>
+                        <span id="discount-percentage" class="discount-percentage"></span>
+                    </div>
+                    <button class="add-to-wishlist">Add to Wishlist</button>
+                    <button class="price-prediction">Price Prediction</button>
+                </div>
+            </div>
+            <h2>Specifications</h2>
+            <ul class="spec-list">
+                <!-- Specifications will be populated dynamically -->
+            </ul>
+        </div>
+    </div>
+
+    <img src="https://i.imgur.com/dGl1IwD.png" alt="Price Trend" style="width: 100%; height: auto;">
+
+  
+    <iframe src="http://127.0.0.1:5000" width="600" height="700" style="border: none;padding-left: 500px;"></iframe>
+    <div class="customer-reviews">
+        <h2>Customer Reviews</h2>
+        <div class="review">
+            <div class="review-rating">★★★★★</div>
+            <div class="review-description">Great product!</div>
+        </div>
+        <div class="review">
+            <div class="review-rating">★☆☆☆☆</div>
+            <div class="review-description">Not worth the money</div>
+        </div>
+        <!-- Add more reviews here if needed -->
+    </div>
+    <script>
+        // Event listener for adding the product to the wishlist
+     $('.add-to-wishlist').click(function() {
+            var productName = $('#product-name').text(); // Extract product name from the page
+            // Make an AJAX POST request to add the product to the wishlist
+            $.ajax({
+                url: 'http://localhost:3000/api/add_to_wishlist',
+                type: 'POST',
+                data: { product_name: productName }, // Send product name to the server
+                success: function(response) {
+                    showPopupMessage('Product added to wishlist successfully!');
+                    localStorage.setItem(productName, true);
+                },
+                error: function(err) {
+                    showPopupMessage('Failed to add product to wishlist. Please try again later.');
+                }
+            });
+        });
+
+    
+    </script>
+    
+<script>
+    // Event listener for adding the product to the wishlist
+$('.add-to-wishlist').click(function() {
+    var productName = $('#product-name').text(); // Extract product name from the page
+    // Make an AJAX POST request to add the product to the wishlist
+    $.ajax({
+        url: 'http://localhost:3000/api/add_to_wishlist',
+        type: 'POST',
+        data: { product_name: productName }, // Send product name to the server
+        success: function(response) {
+            alert('Product added to wishlist successfully!');
+        },
+        error: function(err) {
+            console.error('Error adding product to wishlist:', err);
+            alert('Failed to add product to wishlist. Please try again later.');
+        }
+    });
+});
+
+</script>
+    <script>
+        $(document).ready(function() {
+            // Function to fetch product details based on the product name in the URL
+            function fetchProductDetails() {
+                // Extract product name from the URL query parameter
+                var urlParams = new URLSearchParams(window.location.search);
+                var productName = urlParams.get('product');
+
+                // Make AJAX request to fetch product details for the specified product name
+                $.ajax({
+                    url: 'http://localhost:3000/api/product-details?name=' + encodeURIComponent(productName),
+                    type: 'GET',
+                    success: function(data) {
+                        // Populate product details in the HTML structure
+                        $('#product-image').attr('src', data.image);
+                        $('#product-name').text(data.pdt_name);
+                        $('#product-description').text(data.display_description);
+                        $('#discounted-price').text('$' + data.current_price);
+                        $('#original-price').text('$' + data.initial_price);
+                        $('#discount-percentage').text('-' + ((data.initial_price - data.current_price) / data.initial_price * 100).toFixed(0) + '%');
+                        // Populate the specifications dynamically
+                        $('.spec-list').html('');
+                        $('.spec-list').append('<li><strong>Storage Capacity:</strong> ' + data.storage_capacity + ' GB</li>');
+                        $('.spec-list').append('<li><strong>RAM:</strong> ' + data.ram + ' GB</li>');
+                        $('.spec-list').append('<li><strong>Display Size:</strong> ' + data.display_description + '</li>');
+                        $('.spec-list').append('<li><strong>Resolution:</strong> ' + data.resolution + '</li>');
+                        $('.spec-list').append('<li><strong>Refresh Rate:</strong> ' + data.refresh_rate + '</li>');
+                        $('.spec-list').append('<li><strong>Camera Setup:</strong> ' + data.camera_setup + '</li>');
+                        $('.spec-list').append('<li><strong>Processor:</strong> ' + data.processor + '</li>');
+                        $('.spec-list').append('<li><strong>Battery Life:</strong> ' + data.battery_life + '</li>');
+                        $('.spec-list').append('<li><strong>Operating System:</strong> ' + data.operating_system + '</li>');
+                        $('.spec-list').append('<li><strong>Biometric Security:</strong> ' + data.biometric_security + '</li>');
+                        $('.spec-list').append('<li><strong>Water Resistance:</strong> ' + data.water_resistance + '</li>');
+                        $('.spec-list').append('<li><strong>Fast Charging Support:</strong> ' + data.fast_charging_support + '</li>');
+                        $('.spec-list').append('<li><strong>Wireless Charging Support:</strong> ' + data.wireless_charging_support + '</li>');
+                        $('.spec-list').append('<li><strong>Connectivity Options:</strong> ' + data.connectivity_options + '</li>');
+                        $('.spec-list').append('<li><strong>Color Options:</strong> ' + data.color_options + '</li>');
+                        $('.spec-list').append('<li><strong>Dimensions:</strong> ' + data.dimensions + '</li>');
+                    },
+                    error: function(err) {
+                        console.error('Error fetching product details:', err);
+                    }
+                });
+            }
+
+            // Call the fetchProductDetails function when the document is ready
+            fetchProductDetails();
+        });
+    </script>
+</body>
+</html>
+<style>
+    <style>
+        .popup-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            display: none;
+        }
+
+        .popup-message-content {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .popup-message-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #888;
+        }
+    </style>
+</style>

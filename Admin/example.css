@@ -1,0 +1,251 @@
+/* example.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f3f3f3;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-container img {
+  width: 150px; /* Adjust the width to match Amazon's image size */
+  margin-right: 20px;
+}
+
+.header-container h1 {
+  font-size: 24px;
+  color: #111;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex; /* Use flexbox to arrange image and details side by side */
+}
+
+.product-image {
+  flex: 1; /* Take up 50% of container width */
+  margin-bottom: 20px; /* Add margin at the bottom */
+}
+
+.product-image img {
+  width: 100%; /* Ensure the image fills its container */
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+  cursor: pointer; /* Add pointer cursor to indicate image is clickable */
+}
+
+.product-image img:hover {
+  transform: scale(1.2); /* Zoom effect on hover */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.product-details-container {
+  flex: 1; /* Take up 50% of container width */
+  padding-left: 20px; /* Add padding to the left */
+}
+
+.product-details {
+  padding: 20px;
+}
+
+.product-name {
+  font-size: 24px;
+  margin: 0 0 10px;
+  color: #111;
+}
+
+.product-description {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.product-rating {
+  margin-bottom: 10px;
+  color: #c45500;
+  font-size: 18px;
+}
+
+.rating-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.product-price {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #c45500;
+  font-weight: bold;
+}
+
+.discounted-price {
+  color: #c45500;
+}
+
+.original-price {
+  color: #666;
+  text-decoration: line-through;
+  margin-right: 10px;
+}
+
+.discount-percentage {
+  color: #c45500;
+  font-weight: bold;
+}
+
+.add-to-wishlist {
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.add-to-wishlist:hover {
+  background-color: #d8ab3c;
+}
+
+.price-prediction {
+  background-color: #fff;
+  color: #232f3e;
+  border: 1px solid #232f3e;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+  margin-right: 10px;
+}
+
+.price-prediction:hover {
+  background-color: #232f3e;
+  color: #fff;
+}
+
+.specifications {
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  flex: 1; /* Take up 50% of container width */
+}
+
+.specifications h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.spec-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.spec-list li {
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 16px;
+}
+
+.comparison {
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+.comparison h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th, .comparison-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  color: #666;
+}
+
+.comparison-table th {
+  background-color: #f3f3f3;
+}
+
+.customer-reviews {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.customer-reviews h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.review {
+  margin-bottom: 20px;
+}
+
+.review-rating {
+  color: #c45500;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.review-description {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+      display: flex;
+      flex-direction: column;
+  }
+  .product-image,
+  .product-details-container {
+      width: 100%;
+      margin-bottom: 20px; /* Add margin to the bottom for mobile */
+      padding-left: 0; /* Reset padding for mobile */
+  }
+
+  /* Adjust the font size of product name and description for better readability on smaller screens */
+  .product-name {
+    font-size: 20px;
+  }
+
+  .product-description {
+    font-size: 14px;
+  }
+}
+
+/* example.css */
+
+.spec-list img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px; /* Adjust spacing between icon and text */
+  vertical-align: middle; /* Align icon vertically with text */
+}
+
+/* Add more specific styling as needed */

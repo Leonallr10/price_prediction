@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Predictions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Insert Predictions</h1>
+        <form id="predictionForm">
+            <label for="pdtName">Product Name:</label>
+            <input type="text" id="pdtName" name="pdtName" list="productNamesList" autocomplete="off">
+            <datalist id="productNamesList"></datalist><br><br>
+            <label for="noOfPredictions">Number of Predictions:</label>
+            <input type="number" id="noOfPredictions" name="noOfPredictions"><br><br>
+            <div id="dateInputs"></div><br>
+            <div id="priceInputs"></div><br>
+            <label for="storage">Storage:</label>
+            <input type="text" id="storage" name="storage"><br><br>
+            <label for="ram">RAM:</label>
+            <input type="text" id="ram" name="ram"><br><br>
+            <button type="submit" id="submitButton">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    // Fetch product names from the server
+    fetchProductNames();
+    // Fetch RAM options from the server
+    fetchRAMOptions();
+    // Fetch Storage options from the server
+    fetchStorageOptions();
+
+    // Event listener for input field focus
+    document.getElementById("pdtName").addEventListener("focus", fetchProductNames);
+
+    // Function to fetch product names from the server
+    function fetchProductNames() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:3000/api/pdtname", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var productNames = JSON.parse(xhr.responseText);
+                populateProductNames(productNames);
+            }
+        };
+        xhr.send();
+    }
+
+    // Function to populate the datalist with product names
+    function populateProductNames(productNames) {
+        var datalist = document.getElementById("productNamesList");
+        datalist.innerHTML = "";
+        productNames.forEach(function (productName) {
+            var option = document.createElement("option");
+            option.value = productName;
+            datalist.appendChild(option);
+        });
+    }
+
+    // Function to fetch RAM options from the server
+    function fetchRAMOptions() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:3000/api/ram_options", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var ramOptions = JSON.parse(xhr.responseText);
+                populateRAMOptions(ramOptions);
+            }
+        };
+        xhr.send();
+    }
+
+    // Function to populate the select element with RAM options
+    function populateRAMOptions(ramOptions) {
+        var selectRAM = document.getElementById("ram");
+        selectRAM.innerHTML = "";
+        ramOptions.forEach(function (option) {
+            var opt = document.createElement("option");
+            opt.value = option;
+            opt.textContent = option;
+            selectRAM.appendChild(opt);
+        });
+    }
+
+    // Function to fetch storage options from the server
+    function fetchStorageOptions() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:3000/api/storage_options", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var storageOptions = JSON.parse(xhr.responseText);
+                populateStorageOptions(storageOptions);
+            }
+        };
+        xhr.send();
+    }
+
+    // Function to populate the select element with storage options
+    function populateStorageOptions(storageOptions) {
+        var selectStorage = document.getElementById("storage");
+        selectStorage.innerHTML = "";
+        storageOptions.forEach(function (option) {
+            var opt = document.createElement("option");
+            opt.value = option;
+            opt.textContent = option;
+            selectStorage.appendChild(opt);
+        });
+    }
+    // Form submission event listener
+    document.getElementById("predictionForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var pdtName = document.getElementById("pdtName").value;
+        var noOfPredictions = document.getElementById("noOfPredictions").value;
+        var storage = document.getElementById("storage").value;
+        var ram = document.getElementById("ram").value;
+
+        // Validation
+        if (!pdtName || !noOfPredictions || !storage || !ram) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        var pdtDatesPrices = [];
+        for (var i = 1; i <= noOfPredictions; i++) {
+            var date = document.getElementsByName("pdtDate" + i)[0].value;
+            var price = document.getElementsByName("pdtPrice" + i)[0].value;
+            pdtDatesPrices.push({ date: date, price: price });
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:3000/api/insert_predictions", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    document.getElementById("message").innerText = xhr.responseText;
+                } else {
+                    alert("Error: " + xhr.status);
+                }
+            }
+        };
+
+        var data = {
+            pdtName: pdtName,
+            storage: storage,
+            ram: ram,
+            pdtDatesPrices: JSON.stringify(pdtDatesPrices)
+        };
+
+        xhr.send(JSON.stringify(data));
+    });
+
+    document.getElementById("noOfPredictions").addEventListener("input", function() {
+        var noOfPredictions = parseInt(this.value);
+        var dateInputs = document.getElementById("dateInputs");
+        var priceInputs = document.getElementById("priceInputs");
+        dateInputs.innerHTML = "";
+        priceInputs.innerHTML = "";
+        for (var i = 0; i < noOfPredictions; i++) {
+            var dateInput = document.createElement("input");
+            dateInput.type = "date";
+            dateInput.name = "pdtDate" + (i + 1);
+            dateInputs.appendChild(dateInput);
+            dateInputs.appendChild(document.createElement("br"));
+
+            var priceInput = document.createElement("input");
+            priceInput.type = "text";
+            priceInput.name = "pdtPrice" + (i + 1);
+            priceInputs.appendChild(priceInput);
+            priceInputs.appendChild(document.createElement("br"));
+        }
+    });
+});
+
+</script>
