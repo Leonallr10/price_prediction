@@ -1,0 +1,57 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Prediction Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="mb-4">Product Price Prediction</h1>
+        
+        <form id="productForm">
+            <div class="mb-3" id="commonFields">
+                <select class="form-select mb-3" id="product" name="product" required>
+                    <option value="">Select Product Type</option>
+                    <option value="smartphones">Smartphone</option>
+                    <option value="laptops">Laptop</option>
+                    <option value="accessories">Accessory</option>
+                </select>
+                
+                <input type="text" class="form-control mb-3" id="pdtName" name="pdtName" placeholder="Product Name" required>
+                <input type="number" class="form-control mb-3" id="currentPrice" name="currentPrice" placeholder="Current Price" required>
+                <input type="number" class="form-control mb-3" id="initialPrice" name="initialPrice" placeholder="Initial Price" required>
+            </div>
+
+            <div id="smartphoneFields" class="hidden">
+                <input type="number" class="form-control mb-3" id="storageCapacity" name="storageCapacity" placeholder="Storage Capacity (GB)">
+                <input type="number" class="form-control mb-3" id="ram" name="ram" placeholder="RAM (GB)">
+                <input type="text" class="form-control mb-3" id="cameraSetup" name="cameraSetup" placeholder="Camera Setup">
+                <input type="text" class="form-control mb-3" id="batteryLife" name="batteryLife" placeholder="Battery Life (hours)">
+            </div>
+
+            <div id="laptopFields" class="hidden">
+                <input type="number" class="form-control mb-3" id="storageCapacityLaptop" name="storageCapacityLaptop" placeholder="Storage Capacity (GB)">
+                <input type="number" class="form-control mb-3" id="ramLaptop" name="ramLaptop" placeholder="RAM (GB)">
+                <input type="text" class="form-control mb-3" id="processor" name="processor" placeholder="Processor">
+                <input type="text" class="form-control mb-3" id="resolution" name="resolution" placeholder="Screen Resolution">
+            </div>
+
+            <div id="accessoryFields" class="hidden">
+                <input type="text" class="form-control mb-3" id="compatibility" name="compatibility" placeholder="Compatible Devices">
+                <input type="text" class="form-control mb-3" id="colorOptions" name="colorOptions" placeholder="Available Colors">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Predict Prices</button>
+        </form>
+
+        <div id="predictions-container" class="mt-5"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
